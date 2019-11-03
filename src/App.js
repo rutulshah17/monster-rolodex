@@ -20,6 +20,7 @@ class App extends Component {
 	}
 
 	render() {
+		console.log(this.state.monsters);
 		return (
 			<div className="App">
 				<CardList monsters={this.state.monsters} />
