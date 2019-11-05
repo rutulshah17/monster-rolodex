@@ -8,7 +8,8 @@ class App extends Component {
 		super();
 
 		this.state = {
-			monsters: []
+			monsters: [],
+			searchField: '' 
 		}
 	}
 
@@ -20,10 +21,26 @@ class App extends Component {
 	}
 
 	render() {
-		console.log(this.state.monsters);
+
+		// destructuring, because we do not want to change the original monsters array 
+		// received from API call
+		const { monsters, searchField } = this.state;
+		
+		//looping over monsters.name 
+		//'includes' searches for the string entered in the searchField by the user
+		const filteredMonsters = monsters.filter( monster =>
+			monster.name.toLowerCase().includes(searchField.toLowerCase())
+		);
+
 		return (
 			<div className="App">
-				<CardList monsters={this.state.monsters} />
+				<input type="search" placeholder="search monsters" 
+					onChange={ e => 
+						this.setState( { searchField: e.target.value } ) }
+				/>
+				
+				<CardList monsters={filteredMonsters} />
+			
 			</div>
 		);
   	}
