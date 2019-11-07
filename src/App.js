@@ -21,6 +21,11 @@ class App extends Component {
 		.then( users => this.setState( { monsters: users } ) );
 	}
 
+	//with arrow function, we do not have to bind "this" in the constructor to use it in this function
+	handleChange = (e) => (
+		this.setState( { searchField: e.target.value } )
+	);
+
 	render() {
 
 		// destructuring, because we do not want to change the original monsters array 
@@ -35,10 +40,8 @@ class App extends Component {
 
 		return (
 			<div className="App">
-				
-				<SearchBox placeholder="Search Monsters" handleChange = { e => 
-					this.setState( { searchField: e.target.value } ) }/>
-
+				<h1> Monsters Rolodex </h1>
+				<SearchBox placeholder="Search Monsters" handleChange = {this.handleChange}/>
 				<CardList monsters={filteredMonsters} />
 			
 			</div>
