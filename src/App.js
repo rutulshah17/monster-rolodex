@@ -38,7 +38,9 @@ class App extends Component {
 			monster.name.toLowerCase().includes(this.props.searchField.toLowerCase())
 		);
 
-		return (
+		return !monsters.length
+		? <h1> Loading ... </h1>
+		: (
 			<div className="App">
 				<h1> Monsters Rolodex </h1>
 				<SearchBox placeholder="Search Monsters" handleChange = {this.props.handleChange}/>
