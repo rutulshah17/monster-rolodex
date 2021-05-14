@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { CardList } from './components/card-list/card-list.component';
 import { SearchBox } from './components/search-box/search-box.component';
+import { setSearchFieldAction } from './redux/actions';
 import "./App.css";
 
 class App extends Component {
@@ -9,8 +11,7 @@ class App extends Component {
 		super();
 
 		this.state = {
-			monsters: [],
-			searchField: '' 
+			monsters: []
 		}
 	}
 
@@ -22,26 +23,25 @@ class App extends Component {
 	}
 
 	//with arrow function, we do not have to bind "this" in the constructor to use it in this function
-	handleChange = (e) => (
-		this.setState( { searchField: e.target.value } )
-	);
+	// handleChange = (e) => (
+	// 	this.setState( { searchField: e.target.value } )
+	// );
 
 	render() {
 
-		// destructuring, because we do not want to change the original monsters array 
-		// received from API call
-		const { monsters, searchField } = this.state;
+		console.log(this.props);
+		const { monsters } = this.state;
 		
 		//looping over monsters.name 
 		//'includes' searches for the string entered in the searchField by the user
 		const filteredMonsters = monsters.filter( monster =>
-			monster.name.toLowerCase().includes(searchField.toLowerCase())
+			monster.name.toLowerCase().includes(this.props.searchField.toLowerCase())
 		);
 
 		return (
 			<div className="App">
 				<h1> Monsters Rolodex </h1>
-				<SearchBox placeholder="Search Monsters" handleChange = {this.handleChange}/>
+				<SearchBox placeholder="Search Monsters" handleChange = {this.props.handleChange}/>
 				<CardList monsters={filteredMonsters} />
 			
 			</div>
@@ -49,4 +49,12 @@ class App extends Component {
   	}
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+	searchField: state.searchField
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	handleChange: (event) => dispatch( setSearchFieldAction(event.target.value) )
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
